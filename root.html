@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Root Page</title>
+    <style>
+        html{
+            font-weight: Serif;
+            display: inline-block;
+            margin:  0px auto;
+        }
+        body{
+            margin-top: 50px;
+        }
+        h1{
+            color: #444444;
+            margin: 50px auto 30px;
+            text-align: center;
+        }
+        h3{
+            color: #444444;
+            margin-bottom: 3px;
+            text-align: center;
+        }
+        p{
+            margin: 5px;
+        }
+        #Enter{
+            display: block;
+            width: 80px;
+            background-color: #1abc9c;
+            border: none;
+            color: white;
+            text-decoration: none;
+            font-size: 25px;
+            margin: 0px auto 35px;
+            cursor: pointer;
+            border-radius: 2px;
+            margin-right: 10%;
+        }
+        .form{
+            text-align: end;
+        }
+        .formDiv{
+            margin-right: 60%;
+            width: 60%;
+            padding-right: 50%;
+            padding-top: 10px;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Smart Hotel Rooms Automation</h1>
+    <h3>Enter the room and its passkey</h3>
+    <div class="formDiv">
+        <form class="form">
+            <label for="roomNo">Room Number:
+                <input type="text" id="roomName" name="roomName" ><br><br>
+            </label>
+            
+            <label for="passkey">PassKey:
+                <input type="password" id="passkey" name="passkey" ><br><br>
+            </label>
+            
+            <button type="button" id="Enter" onclick=enterRooms()>
+                Enter
+            </button>
+        </form>
+    </div>
+    <script>
+        function enterRooms(){
+            var roomName = document.getElementById("roomName");
+            var passkey = document.getElementById("passkey");
+            if(roomName.value=="Room1" && passkey.value=="Room1"){
+                window.location.href="http://127.0.0.1:5500/room1.html"
+            }
+            else if(roomName.value="Room2"&& passkey.value=="Room2"){
+                window.location.href=/*WiFi.localIP()+*/"http://192.168.235.152/room2";
+            }
+            else{
+                window.location.href="http://127.0.0.1:5500/room1.html"
+            }
+        }
+    </script>
+</body>
+</html>

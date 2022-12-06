@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room1</title>
+    <style>
+        html{
+            font-weight: Serif;
+            display: inline-block;
+            margin:  0px auto;
+            text-align: center;
+        }
+        body{
+            margin-top: 50px;
+        }
+        h1{
+            color: #444444;
+            margin: 50px auto 30px;
+        }
+        h3{
+            color: #444444;
+            margin-bottom: 3px;
+        }
+        p{
+            margin: 5px;
+        }
+        input[type=submit]{
+            background-color: #1abc9c;
+            border: none;
+            font-size: large;
+            color: white;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Smart Hotel Rooms Automation</h1>
+    <h3>Room1</h3>
+    <p id="bulbRoom1">Bulb</p>
+    <form action="/room1/LED" method="POST">
+        <input type="submit" value="Toggle LED" id="ledButton" accesskey="l">
+    </form>
+     
+    <p>Fan</p>
+    <form action="/room1/FAN" method="POST">
+        <input type="submit" value="Toggle FAN" id="fanButton" accesskey="f">
+    </form>
+
+
+    <script>
+        var inputLed1= document.getElementById('ledButton');
+        var inputFan1 = document.getElementById('fanButton');
+        inputFan1.style.backgroundColor="#1abc9c";
+        if(isLed1){
+            inputLed1.style.backgroundColor="#1abc9c";
+        }
+        if(!isLed1){
+            inputLed1.style.backgroundColor="red";
+        }
+        if(isFed1){
+            inputFan1.style.backgroundColor="Blue";
+        }
+        if(!isFed1){
+            inputFan1.style.backgroundColor="red";
+        }
+    </script>
+</body>
+</html>
