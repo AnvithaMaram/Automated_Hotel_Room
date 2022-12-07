@@ -10,8 +10,8 @@
 #include <ESP8266mDNS.h>
 
 //WiFi ssid and Password
-const char* ssid = "DaaPattuko";
-const char* passwd = "naadhipattuko@12";
+const char* ssid = "IOT";
+const char* passwd = "weWantMarks@40";
 
 //Server object
 ESP8266WebServer server(80); 
@@ -20,6 +20,10 @@ ESP8266WebServer server(80);
 String wifiLocal;
 
 bool isLed1,isLed2,isFan1,isFan2;
+// // 192.168.186.23
+IPAddress ip(192,168,186,152); 
+IPAddress gateway(192,168,186,23); 
+IPAddress subnet(255,255,255,0); 
 
 String mainPageLoading(){ //mainPage loading function which returns a web-page as a String
 String mainPage = "<!DOCTYPE html>\n";
@@ -96,13 +100,14 @@ mainPage+="        </form>\n";
 mainPage+="    </div>\n";
 mainPage+="    <script>\n";
 mainPage+="        function enterRooms(){\n";
+mainPage+="            const wifiLocal= window.location.host+window.location.pathname;\n";
 mainPage+="            var roomName = document.getElementById(\"roomName\");\n";
 mainPage+="            var passkey = document.getElementById(\"passkey\");\n";
 mainPage+="            if(roomName.value==\"Room1\" && passkey.value==\"Room1\"){\n";
-mainPage+="                 window.location.href=\"http://"+wifiLocal+"/room1\";\n";
+mainPage+="                 window.location.href=\"http://\"+wifiLocal+\"room1\";\n";
 mainPage+="            }\n";
 mainPage+="            else if(roomName.value=\"Room2\"&& passkey.value==\"Room2\"){\n";
-mainPage+="                 window.location.href=\"http://"+wifiLocal+"/room2\";\n";
+mainPage+="                 window.location.href=\"http://\"+wifiLocal+\"room2\";\n";
 mainPage+="            }\n";
 mainPage+="            else{\n";
 mainPage+="                alert(\"Entered wrong credentials\");\n";
@@ -119,7 +124,7 @@ String room1= "<!DOCTYPE html>\n";
 room1+="<html lang=\"en\">\n";
 room1+="<head>\n";
 room1+="    <meta charset=\"UTF-8\">\n";
-room1+="    <meta http-equiv=\"refresh\" content=\"1\">\n";
+// room1+="    <meta http-equiv=\"refresh\" content=\"2\">\n";
 room1+="    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
 room1+="    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
 room1+="    <title>Room1</title>\n";
@@ -168,7 +173,7 @@ room1+="    </form>";
 room1+="  <script>\n";
 room1+="        var inputLed1= document.getElementById('ledButton');\n";
 room1+="        var inputFan1 = document.getElementById('fanButton');\n";
-room1+="        inputFan1.style.backgroundColor=\"#1abc9c\";\n";
+// room1+="        inputFan1.style.backgroundColor=\"#1abc9c\";\n";
 if(!isLed1){
 room1+="            inputLed1.style.backgroundColor=\"#1abc9c\";\n";
 }
@@ -192,7 +197,7 @@ String room2="<!DOCTYPE html>\n";
 room2+="<html lang=\"en\">\n";
 room2+="<head>\n";
 room2+="    <meta charset=\"UTF-8\">\n";
-room2+="    <meta http-equiv=\"refresh\" content=\"1\">\n";
+// room2+="    <meta http-equiv=\"refresh\" content=\"2\">\n";
 room2+="    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
 room2+="    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
 room2+="    <title>Room2</title>\n";
@@ -231,17 +236,17 @@ room2+="    <h1>Smart Hotel Rooms Automation</h1>\n";
 room2+="    <h3>Room2</h3>\n";
 room2+="    <p id=\"bulbRoom1\">Bulb</p>\n";
 room2+="    <form action=\"/room2/LED\" method=\"POST\">\n";
-room2+="        <input type=\"submit\" value=\"Toggle LED\">\n";
+room2+="        <input type=\"submit\" value=\"Toggle LED\" id=\"ledButton\" accesskey=\"f\">\n";
 room2+="    </form>\n";
 room2+="     \n";
 room2+="    <p>Fan</p>\n";
 room2+="    <form action=\"/room2/FAN\" method=\"POST\" >\n";
-room2+="        <input type=\"submit\" value=\"Toggle FAN\" >\n";
+room2+="        <input type=\"submit\" value=\"Toggle FAN\" id=\"fanButton\" accesskey=\"f\">\n";
 room2+="    </form>\n";
 room2+="  <script>\n";
 room2+="        var inputLed2= document.getElementById('ledButton');\n";
 room2+="        var inputFan2 = document.getElementById('fanButton');\n";
-room2+="        inputFan2.style.backgroundColor=\"#1abc9c\";\n";
+// room2+="        inputFan2.style.backgroundColor=\"#1abc9c\";\n";
 if(!isLed2){
 room2+="            inputLed2.style.backgroundColor=\"#1abc9c\";\n";
 }
@@ -260,9 +265,6 @@ room2+="</html>";
 return room2;
 }
 
-IPAddress ip(192,168,186,30); 
-IPAddress gateway(192,168,186,23); 
-IPAddress subnet(255,255,255,0); 
 
 void setup_Wifi(){
 	Serial.println("Connecting to "); //decoration
@@ -279,6 +281,10 @@ void setup_Wifi(){
 	Serial.println("Wifi connected...!"); //decoration after connecting to WiFi
 	Serial.print("Got IP: ");
 	Serial.println(WiFi.localIP());
+  if (!MDNS.begin("esp8266")) {             // Start the mDNS responder for esp8266.local
+    Serial.println("Error setting up MDNS responder!");
+  }
+  Serial.println("mDNS responder started");
   
   wifiLocal = WiFi.localIP().toString();
 }
@@ -332,7 +338,7 @@ void handle_NotFound(){ //if request page is not found
 
 void setup(){
 	Serial.begin(9600);//serial begin
-   WiFi.config(ip,gateway,subnet);
+  WiFi.config(ip,gateway,subnet);
 	setup_Wifi();//setting WiFi
 	
 	//Declaring the pins
